@@ -1,2 +1,2 @@
 # leaderboard
-Leaderboard is a project that allow us take time in competencies that need mesure time
+Leaderboard is a project that allows take time in competencies that need mesure time

@@ -6,9 +6,10 @@ class LeaderBoard extends React.Component{
         super(props);
         //console.log(props);
         this.state = {
-            players: props,
+            players: props.players,
         }
     }
+  
     render(){
         return(<div>
             <table>
@@ -17,18 +18,29 @@ class LeaderBoard extends React.Component{
                     <th>Name</th>
                     <th>Time</th>
                 </tr>
-                <tr>
+               
                 {
-                  this.state.players.props.map((player) => {
+                
+                  this.state.players.sort((a, b) => {
+                      if(a.time < b.time){
+                          return -1;
+                      }
+                      if(a.time > b.time) {
+                          return 1;
+                      }
+                      return 0;
+                  }).map((player) => {
                     return(
-                    <tr>
-                        <th>{player.name}</th>
-                        <th>{player.age}</th>
-                        <th>{player.time}</th>
-                    </tr>)
+                        <tr>
+                    
+                            <td>{player.name}</td>
+                            <td>{player.lastName}</td>
+                            <td>{player.time}</td>
+                        </tr>)
                   })
+                  
                 }
-                </tr>
+              
                 
             </table>
             </div>);

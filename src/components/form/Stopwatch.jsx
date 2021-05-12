@@ -1,41 +1,48 @@
 import React  from 'react'; 
-import LeaderBoard from './LeaderBoard';
 import Players from './Players';
+import LeaderBoard from './LeaderBoard';
 
 class Stopwatch extends React.Component{
     //Create a sp
     constructor(props){
         super(props);
+      
         this.state = {
             isActivate: false,
             cs: 0,
             seconds: 0,
             minutes: 0,
-            players: Players,
+            players: props.players,
+            isSaved: props.isSaved,
         }
+       
         this.cs = 0;
         this.seconds = 0;
         this.minutes = 0;
         this.timer = this.timer.bind(this);
         this.handleClickStopwatch = this.handleClickStopwatch.bind(this);
-    
+        this.findPlayer = this.findPlayer.bind(this);
     }
+
     handleClickStopwatch(){
-      
+       
         if(!this.state.isActivate){
             this.timerId = setInterval( () => {this.timer() }, 10);
             this.setState( { isActivate: true });
-        }else{
+        }else{  
             clearInterval(this.timerId);
             this.setState({ isActivate: false });
-            this.setState({ players: Players });
             const player = this.state.players.find((player) => player.name === document.getElementsByName("Name")[0].value);            
             player["time"] = document.getElementsByClassName("time")[0].textContent;
+            this.setState({ players: Players });
+            this.cs = 0;
+            this.seconds = 0;
+            this.minutes = 0;
             this.setState({cs: 0, seconds: 0,  minutes: 0 });
         }
     }
  
-    timer(){
+    timer() {
         if(this.cs === 99) {
             this.cs = 0;
             this.seconds++;
@@ -48,15 +55,22 @@ class Stopwatch extends React.Component{
             this.setState( { minutes: this.minutes });
         }
 
-      
         this.cs++;
         this.setState({ cs: this.cs });
     }
+
+    findPlayer(){
+        let player = this.state.players.find((player) => {
+            return player.name === document.getElementsByName("Name")[0].value;
+        }); 
+        return player ? false : true ;
+    }
+
     render(){
         return(<div>
             <h1 className="time">{this.state.minutes <= 9 ? 0 : ''}{this.state.minutes}:{this.state.seconds<=9 ? 0 : ''}{this.state.seconds}:{this.state.cs<=9 ? 0 : ''}{this.state.cs}</h1>
-            <button onClick={this.handleClickStopwatch}>Iniciar</button>
-            <LeaderBoard props = {this.state.players}/>
+            <button  name="Start"  onClick={this.handleClickStopwatch} disabled={this.findPlayer()}>Iniciar</button>
+            <LeaderBoard players = { this.state.players }/>
         </div>);
     }
 }

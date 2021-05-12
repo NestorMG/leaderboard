@@ -1,30 +1,52 @@
 import React from 'react';
 import Stopwatch from './Stopwatch';
 import Players from './Players';
+import LeaderBoard from './LeaderBoard';
 
 class Form extends React.Component {
     constructor(props) {
         super(props);
+        //States
         this.state = {
             isNameEmpty: true,
             isAgeEmpty: true,
             players: Players,
-        }
-        this.players = []; //Propiedad del formulario
-        this.handleChange = this.handleChange.bind(this);
-        this.handleClickSave = this.handleClickSave.bind(this);
-    };
-    handleClickSave(){
-        let player = {
-            name: document.getElementsByName("Name")[0].value,
-            age: document.getElementsByName("Age")[0].value
+            isSaved: false, 
         };
 
-        this.players.push(player);
-        this.setState({ players: this.players });
-       
-        Players.push(player);//Esta es la parte que ingresa nuevos datos
-     
+        //Properties
+        this.players = []; 
+        this.handleChange = this.handleChange.bind(this);
+        this.handleClickSave = this.handleClickSave.bind(this);
+        
+    
+    };
+    handleClickSave(){
+        //Note: Refactor with a obj
+        let player = Players.find(player => {
+            return player.name === document.getElementsByName("Name")[0].value;
+        });
+        
+        if(!player) {
+
+            player = {
+                name: document.getElementsByName("Name")[0].value,
+                lastName: document.getElementsByName("Age")[0].value
+            };
+
+            this.players.push(player);
+            this.setState({ players: this.players });//In this moment is when the component is changing
+            this.setState({ isSaved: true });//why is it changing ?
+           
+            Players.push(player); //Esta es la parte que ingresa nuevos datos
+
+            //console.log(Players );
+        }else{
+            document.getElementsByName("Start")[0].disabled=true;
+            this.setState( { isSaved: true });
+           
+        }
+        console.log(this.state.isSaved + "f");
     }
     handleChange(e){
         let inputName = e.target.name; //obtienes el nombre del html
@@ -33,14 +55,19 @@ class Form extends React.Component {
 
         value.length === 0 ? this.setState({[attrib]: true}) : this.setState({[attrib]: false});
     }
-
+   
     render(){
+       
         return(<div className="form-personal-data">
-            <input type="text" name="Name" id="" onChange = {this.handleChange}/>
-            <input type="text" name="Age" id="" onChange = {this.handleChange}/>
-            <button disabled={ !this.state.isAgeEmpty && !this.state.isNameEmpty ? false : true } id="save" onClick={ this.handleClickSave }>Save</button>
-            <button disabled={ !this.state.isAgeEmpty && !this.state.isNameEmpty ? false : true }> Start</button>
-            <Stopwatch />
+            <div className="data">
+                <label htmlFor="Name">Name</label>
+                <input type="text" name="Name" id="" onChange = {this.handleChange}/>
+                <label htmlFor="Age">Last Name</label>
+                <input type="text" name="Age" id="" onChange = {this.handleChange}/>
+                <button disabled={ !this.state.isAgeEmpty && !this.state.isNameEmpty ? false : true } id="save" onClick={ this.handleClickSave }>Save</button>
+            </div>
+
+            <Stopwatch players = { this.state.players } isSaved= {this.state.isSaved}/>
         </div>)
     }
 };

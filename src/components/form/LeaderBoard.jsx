@@ -8,8 +8,13 @@ class LeaderBoard extends React.Component{
         this.state = {
             players: props.players,
         }
+        this.handleClickReset = this.handleClickReset.bind(this);
     }
-  
+    handleClickReset(){
+        
+        this.setState({players: Players.splice()});
+        
+    }
     render(){
         return(<div>
             <table>
@@ -43,6 +48,7 @@ class LeaderBoard extends React.Component{
               
                 
             </table>
+            <button onClick={this.handleClickReset}>Reset</button>
             </div>);
     }
 }

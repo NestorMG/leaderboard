@@ -1,4 +1,4 @@
-let Players = [
+var Players = [
 
 ];
 

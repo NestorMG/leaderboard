@@ -36,7 +36,7 @@ class Stopwatch extends React.Component{
             player["time"] = document.getElementsByClassName("time")[0].textContent;
             this.setState({ players: Players });
             this.cs = 0;
-            this.seconds = 0;
+            this.seconds = 0;//seconds
             this.minutes = 0;
             this.setState({cs: 0, seconds: 0,  minutes: 0 });
         }

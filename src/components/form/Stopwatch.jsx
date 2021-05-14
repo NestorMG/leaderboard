@@ -27,7 +27,7 @@ class Stopwatch extends React.Component{
     handleClickStopwatch(){
        
         if(!this.state.isActivate){
-            this.timerId = setInterval( () => {this.timer() }, 10);
+            this.timerId = setInterval( () => {this.timer() }, 1);
             this.setState( { isActivate: true });
         }else{  
             clearInterval(this.timerId);
